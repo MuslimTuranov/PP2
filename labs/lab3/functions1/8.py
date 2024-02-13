@@ -1,17 +1,10 @@
 def spy_game(nums):
-    found_zero = False
-    found_double_zero = False
-    for num in nums:
-        if num == 0:
-            if found_zero:  
-                found_double_zero = True  
-        elif num == 7:
-            if found_double_zero:  
-                return True  
-        else:
-            found_zero = False  
-
-    return False  
+    zerozeroseven = False
+    for x in range(len(nums) - 1):
+        if nums[x] == 0 and nums[x+1] == 0 and nums[x+2] == 7:
+            zerozeroseven = True
+    
+    print(zerozeroseven)
     
 
 spy_game([1,2,4,0,0,7,5]) 
