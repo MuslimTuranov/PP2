@@ -1,10 +1,12 @@
 import os
 import shutil
-pathforoldfile = input("enter the path of old file: ")
-pathfornewfile = input("enter the path for new file: ")
+
+oldfile = input("old: ")
+newfile = input("new: ")
+
 try:
-    with open(pathforoldfile, "r") as oldfile:
-        with open(pathfornewfile + '\\' + 'newfile.doc', "w") as newfile:
+    with open(oldfile, "r") as oldfile:
+        with open(newfile, "w") as newfile:
             shutil.copyfileobj(oldfile, newfile)
 except FileNotFoundError:
-  print("file not found")
+    print("File not found")

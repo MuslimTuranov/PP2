@@ -1,6 +1,6 @@
 import os
 
-path = input("enter the path: ")
+path = input("path: ")
 if os.access(path, os.F_OK):
     os.remove(path)
 else:
