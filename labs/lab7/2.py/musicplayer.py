@@ -1,42 +1,47 @@
-import pygame as pg
+import pygame
+import sys
 
-CarnivalPath = r"C:\Users\musli\Documents\pp2\PP2\labs\lab7\2.py\Carnival.wav"
+pygame.init()
 
-pg.init()
+height = 800
+width = 800
 
-sc = pg.display.set_mode((480, 360))
-pg.display.set_caption("wav")
-clock = pg.time.Clock()
-pg.mixer.init()
-musicList = [CarnivalPath]
-pg.mixer.music.load(musicList[0])
-pg.mixer.music.play(-1)
-kanyebear = pg.image.load(r"C:\Users\musli\Documents\pp2\PP2\labs\lab7\2.py\kanyebear.jpg")
+screen = pygame.display.set_mode((height, width))
+pygame.display.set_caption("Kanye West, TY Dolla Sign ft. Rich Kid, Playboi Carti - Carnival")
+pygame.mixer.init()
+carnival_path = r"C:\Users\musli\Documents\pp2\PP2\labs\lab7\2.py\Carnival.wav"
+kanye_path = pygame.image.load(r"C:\Users\musli\Documents\pp2\PP2\labs\lab7\2.py\kanyebear.jpg")
+music_list = [carnival_path]
+pygame.mixer.music.load(music_list[0])
+pygame.mixer.music.play(-1)
+kanye = pygame.transform.scale(kanye_path, (500,500))
+screen.blit(kanye, (150, 150))
 
+black = (0, 0, 0)
 
-sc.blit(kanyebear, (0, 0))
-flPlay = True
 run = True
 index = 0
-while run:
-    for event in pg.event.get():
-        if event.type == pg.QUIT:
-            run = False
-        if event.type == pg.KEYDOWN:
-            if event.key == pg.K_SPACE:
-                if flPlay:
-                    pg.mixer.music.pause()
-                else:
-                    pg.mixer.music.unpause()
-                flPlay = not flPlay
-            elif event.key == pg.K_RIGHT:
-                index = (index + 1) % len(musicList)
-                pg.mixer.music.load(musicList[index])
-                pg.mixer.music.play()
-            elif event.key == pg.K_LEFT:
-                index = (index - 1) % len(musicList)
-                pg.mixer.music.load(musicList[index])
-                pg.mixer.music.play()
+pl = True
 
-    pg.display.flip()
-    clock.tick(60)
+while run:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            run = False
+            pygame.quit()
+            sys.exit()
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                pl = not pl
+                if pl:
+                    pygame.mixer.music.pause()
+                else:
+                    pygame.mixer.music.unpause()
+            elif event.key == pygame.K_RIGHT:
+                pos = pygame.mixer.music.get_pos() / 1000  
+                pygame.mixer.music.set_pos(pos + 10)  
+            elif event.key == pygame.K_LEFT:
+                pos = pygame.mixer.music.get_pos() / 1000  
+                pygame.mixer.music.set_pos(pos - 10)   
+                
+                
+    pygame.display.flip()

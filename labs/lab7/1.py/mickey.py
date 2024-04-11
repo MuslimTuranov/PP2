@@ -1,45 +1,38 @@
 import pygame
-import sys
-import time
+import datetime
 
 pygame.init()
 
-screen_width = 400
-screen_height = 400
-screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption("Mickey Mouse Clock")
+clock = pygame.time.Clock()
 
-clock_image = pygame.image.load(r"C:\Users\musli\Documents\pp2\PP2\labs\lab7\1.py\output.png")
-minute_hand_image = pygame.image.load(r"C:\Users\musli\Documents\pp2\PP2\labs\lab7\1.py\rightie.jpg")
-second_hand_image = pygame.image.load(r"C:\Users\musli\Documents\pp2\PP2\labs\lab7\1.py\leftie.jpg")
+mick = pygame.transform.scale(pygame.image.load(r"C:\Users\musli\Documents\pp2\PP2\labs\lab7\1.py\mainclock.png"), (800, 600))
+min = pygame.transform.scale(pygame.image.load(r"C:\Users\musli\Documents\pp2\PP2\labs\lab7\1.py\rightarm.png"), (800, 600))
+sec = pygame.transform.scale(pygame.image.load(r"C:\Users\musli\Documents\pp2\PP2\labs\lab7\1.py\leftarm.png"), (50, 600))
 
-clock_image = pygame.transform.scale(clock_image, (screen_width, screen_height))
 
-def draw_clock(minute_angle, second_angle):
-    screen.blit(clock_image, (0, 0))
+def rot_center(surf, image, angle, x, y):
+    image = pygame.transform.rotate(image, angle)
+    rect = image.get_rect(center=image.get_rect(center=(x, y)).center)
+    surf.blit(image, rect)
 
-    rotated_minute_hand = pygame.transform.rotate(minute_hand_image, minute_angle)
-    minute_hand_rect = rotated_minute_hand.get_rect(center=(screen_width // 2, screen_height // 2))
-    screen.blit(rotated_minute_hand, minute_hand_rect)
 
-    rotated_second_hand = pygame.transform.rotate(second_hand_image, second_angle)
-    second_hand_rect = rotated_second_hand.get_rect(center=(screen_width // 2, screen_height // 2))
-    screen.blit(rotated_second_hand, second_hand_rect)
+screen = pygame.display.set_mode((800, 600))
+pygame.display.set_caption("Clock")
 
-def get_hand_angles():
-    current_time = time.localtime()
-    minute_angle = -(current_time.tm_min * 6)  
-    second_angle = -(current_time.tm_sec * 6)  
-    return minute_angle, second_angle
+done = False
 
-while True:
+while not done:
+    t = datetime.datetime.now()
+
+    clock.tick(30)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
+            done = True
 
-    screen.fill((255, 255, 255))  
-    minute_angle, second_angle = get_hand_angles()
-    draw_clock(minute_angle, second_angle)
-    pygame.display.flip()
-    pygame.time.delay(1000) 
+    screen.blit(mick, (0, 0))
+    rot_center(screen, min, -t.second * (6), 400, 300)
+    rot_center(screen, sec, -t.minute * (6), 400, 300)
+
+    pygame.display.update()
+
+pygame.quit()
