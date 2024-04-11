@@ -48,32 +48,29 @@ while not done:
             lmbpressed = True
             pos = pygame.mouse.get_pos()
 
-            # Обработка кликов для выбора цвета
             for i, box in enumerate(color_boxes):
                 if box[0] < pos[0] < box[0] + box[2] and box[1] < pos[1] < box[1] + box[3]:
                     selected_color = box[4]  
                     selected_box_index = i
                     break
 
-            # Обработка кликов для выбора режима рисования
             if drawing_mode == "triangle":
-                triangle_points.append(pos)  # Добавляем текущую позицию в список точек треугольника
+                triangle_points.append(pos)  
 
             elif drawing_mode == "square":
-                square_start = pos  # Запоминаем начальную позицию для рисования квадрата
+                square_start = pos  
 
             elif drawing_mode == "circle":
-                circle_center = pos  # Запоминаем центр окружности
-                circle_radius = 0  # Сбрасываем радиус до нуля
+                circle_center = pos  
+                circle_radius = 0  
 
         elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
             lmbpressed = False
-            # Завершаем рисование треугольника при отпускании левой кнопки мыши
+
             if drawing_mode == "triangle" and len(triangle_points) == 3:
                 pygame.draw.polygon(screen, selected_color, triangle_points)
-                triangle_points = []  # Очищаем список точек после завершения рисования треугольника
+                triangle_points = []  
 
-            # Завершаем рисование квадрата при отпускании левой кнопки мыши
             elif drawing_mode == "square" and square_start:
                 end_pos = pygame.mouse.get_pos()
                 width = end_pos[0] - square_start[0]
@@ -82,14 +79,12 @@ while not done:
                 pygame.draw.rect(screen, selected_color, square_rect)
                 square_start = None
 
-            # Завершаем рисование окружности при отпускании левой кнопки мыши
             elif drawing_mode == "circle" and circle_center:
                 pygame.draw.circle(screen, selected_color, circle_center, circle_radius)
                 circle_center = None
                 circle_radius = 0
 
         elif event.type == pygame.MOUSEMOTION:
-            # Обновляем радиус окружности при движении мыши в режиме рисования окружности
             if drawing_mode == "circle" and circle_center:
                 mouse_pos = pygame.mouse.get_pos()
                 circle_radius = int(math.hypot(mouse_pos[0] - circle_center[0], mouse_pos[1] - circle_center[1]))
@@ -103,26 +98,22 @@ while not done:
                     thickness -= 5
             if event.key == pygame.K_0:
                 screen.fill(white)
-            if event.key == pygame.K_t:  # Режим треугольника
+            if event.key == pygame.K_t:  
                 drawing_mode = "triangle"
-            elif event.key == pygame.K_s:  # Режим квадрата
+            elif event.key == pygame.K_s:  
                 drawing_mode = "square"
-            elif event.key == pygame.K_c:  # Режим окружности
+            elif event.key == pygame.K_c:  
                 drawing_mode = "circle"
 
-    # Рисуем остальные элементы (цветные квадраты и т. д.)
     for box in color_boxes:
         pygame.draw.rect(screen, box[4], box[:4])  
 
-    # Рисуем выделение выбранного цвета
     if selected_box_index is not None:
         pygame.draw.rect(screen, white, color_boxes[selected_box_index][:4], width=2)  
 
-    # Рисуем текущий режим рисования (если он есть)
     if drawing_mode == "triangle" and len(triangle_points) == 2:
         pygame.draw.line(screen, selected_color, triangle_points[0], triangle_points[1], thickness)
 
-    # Отображаем текущий режим рисования для квадрата (если он есть)
     if drawing_mode == "square" and square_start:
         end_pos = pygame.mouse.get_pos()
         width = end_pos[0] - square_start[0]
@@ -130,7 +121,6 @@ while not done:
         square_rect = pygame.Rect(square_start[0], square_start[1], width, height)
         pygame.draw.rect(screen, selected_color, square_rect, thickness)
 
-    # Отображаем текущий режим рисования для окружности (если он есть)
     if drawing_mode == "circle" and circle_center:
         pygame.draw.circle(screen, selected_color, circle_center, circle_radius, thickness)
 

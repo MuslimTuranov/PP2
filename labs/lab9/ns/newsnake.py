@@ -23,17 +23,15 @@ fps = pygame.time.Clock()
 snake_position = [100, 50]
 snake_body = [[100, 50], [90, 50]]
 
-# Define different types of food with different weights
-food_types = ['normal', 'special', 'disappearing']
-food_weights = [0.6, 0.3, 0.1]  # Probabilities for each food type
 
+food_types = ['normal', 'special', 'disappearing']
+food_weights = [0.6, 0.3, 0.1]  
 direction = 'RIGHT'
 change_to = direction
 
 score_value = 0
 
-# Define time duration for disappearing food
-disappearing_food_timer = 5  # 5 seconds
+disappearing_food_timer = 5  
 
 def show_score(color, font, size):
     score_font = pygame.font.SysFont(font, size)
@@ -53,7 +51,7 @@ def game_over():
     pygame.quit()
 
 def spawn_food():
-    food_type = random.choices(food_types, weights=food_weights)[0]  # Randomly choose a food type based on weights
+    food_type = random.choices(food_types, weights=food_weights)[0] 
     
     if food_type == 'normal':
         return [random.randrange(1, (height // 10)) * 10, random.randrange(1, (width // 10)) * 10], blue, False
@@ -69,7 +67,7 @@ def check_food_collision(snake_position, food_position, food_type, disappearing_
     
     if snake_position[0] == food_position[0] and snake_position[1] == food_position[1]:
         if food_type == 'disappearing':
-            score_value += 20  # Increase score for disappearing food
+            score_value += 20  
         else:
             score_value += 10
         
